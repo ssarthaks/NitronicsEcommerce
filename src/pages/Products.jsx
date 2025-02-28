@@ -1,140 +1,159 @@
-"use client"
-
-import { useState, useEffect, useRef } from "react"
-import axios from "axios"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 import ProductCard from "../components/ProductCard";
-import { AiOutlineClose, AiOutlineFilter } from "react-icons/ai"
-import { useLocation } from "react-router-dom"
-import { useCart } from "../context/CartContext"
-import { useCategory } from "../context/CategoryContext"
+import { AiOutlineClose, AiOutlineFilter } from "react-icons/ai";
+import { useLocation } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import { useCategory } from "../context/CategoryContext";
 
 const Products = () => {
-  const location = useLocation()
-  const searchParams = new URLSearchParams(location.search)
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
 
-  const category = searchParams.get("category")
-  const subcategory = searchParams.get("subcategory")
-  const childcategory = searchParams.get("childcategory")
+  const category = searchParams.get("category");
+  const subcategory = searchParams.get("subcategory");
+  const childcategory = searchParams.get("childcategory");
 
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [selectedPriceRange, setSelectedPriceRange] = useState(null)
-  const [selectedCategories, setSelectedCategories] = useState([])
-  const [productList, setProductList] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const { addToCart } = useCart()
-  const { categories } = useCategory()
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedPriceRange, setSelectedPriceRange] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [productList, setProductList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { addToCart } = useCart();
+  const { categories } = useCategory();
 
   // Reference for sidebar to detect clicks outside
-  const filterRef = useRef(null)
+  const filterRef = useRef(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("/api/products")
+        const response = await axios.get("/api/products");
         const productsWithLikeStatus = response.data.map((product) => ({
           ...product,
           images: JSON.parse(product.images),
           isLiked: false,
-        }))
-        setProductList(productsWithLikeStatus)
+        }));
+        setProductList(productsWithLikeStatus);
       } catch (err) {
-        setError(err)
+        setError(err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProducts()
-  }, [])
+    fetchProducts();
+  }, []);
 
   const handleAddToCart = async (productId) => {
-    await addToCart(productId)
-  }
+    await addToCart(productId);
+  };
 
   const handleLikeClick = (productId) => {
     setProductList((prevList) =>
-      prevList.map((product) => (product.id === productId ? { ...product, isLiked: !product.isLiked } : product)),
-    )
-  }
+      prevList.map((product) =>
+        product.id === productId
+          ? { ...product, isLiked: !product.isLiked }
+          : product
+      )
+    );
+  };
 
   const toggleFilter = () => {
-    setIsFilterOpen(!isFilterOpen)
-  }
+    setIsFilterOpen(!isFilterOpen);
+  };
 
   const handlePriceFilterChange = (range) => {
-    setSelectedPriceRange(range)
-  }
+    setSelectedPriceRange(range);
+  };
 
   const handleCategoryFilterChange = (category) => {
     if (selectedCategories.includes(category)) {
-      setSelectedCategories(selectedCategories.filter((cat) => cat !== category))
+      setSelectedCategories(
+        selectedCategories.filter((cat) => cat !== category)
+      );
     } else {
-      setSelectedCategories([...selectedCategories, category])
+      setSelectedCategories([...selectedCategories, category]);
     }
-  }
+  };
 
   const filteredProducts = productList.filter((product) => {
-    let matchesPrice = true
-    let matchesCategory = true
+    let matchesPrice = true;
+    let matchesCategory = true;
 
     if (selectedPriceRange) {
-      const [min, max] = selectedPriceRange
-      matchesPrice = product.price >= min && product.price <= max
+      const [min, max] = selectedPriceRange;
+      matchesPrice = product.price >= min && product.price <= max;
     }
     if (category && product.category) {
-      const formattedCategory = category.replace(/-/g, " ").toLowerCase().trim()
+      const formattedCategory = category
+        .replace(/-/g, " ")
+        .toLowerCase()
+        .trim();
       if (product.category.toLowerCase().trim() !== formattedCategory) {
-        return false
+        return false;
       }
     }
     if (subcategory && product.subCategory) {
-      const formattedSubcategory = subcategory.replace(/-/g, " ").toLowerCase().trim()
+      const formattedSubcategory = subcategory
+        .replace(/-/g, " ")
+        .toLowerCase()
+        .trim();
       if (product.subCategory.toLowerCase().trim() !== formattedSubcategory) {
-        return false
+        return false;
       }
     } else if (subcategory) {
-      return false
+      return false;
     }
     if (childcategory && product.childCategory) {
-      const formattedChildCategory = childcategory.replace(/-/g, " ").toLowerCase().trim()
-      if (product.childCategory.toLowerCase().trim() !== formattedChildCategory) {
-        return false
+      const formattedChildCategory = childcategory
+        .replace(/-/g, " ")
+        .toLowerCase()
+        .trim();
+      if (
+        product.childCategory.toLowerCase().trim() !== formattedChildCategory
+      ) {
+        return false;
       }
     } else if (childcategory) {
-      return false
+      return false;
     }
 
     if (selectedCategories.length > 0) {
       matchesCategory =
-        selectedCategories.includes(product.category) || selectedCategories.includes(product.childCategory)
+        selectedCategories.includes(product.category) ||
+        selectedCategories.includes(product.childCategory);
     }
 
-    return matchesPrice && matchesCategory
-  })
+    return matchesPrice && matchesCategory;
+  });
 
   // Close sidebar when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (filterRef.current && !filterRef.current.contains(event.target)) {
-        setIsFilterOpen(false)
+        setIsFilterOpen(false);
       }
-    }
+    };
 
     if (isFilterOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
+      document.addEventListener("mousedown", handleClickOutside);
     } else {
-      document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [isFilterOpen])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isFilterOpen]);
 
-  if (loading) return <p className="text-nitro-gray-300">Loading...</p>
-  if (error) return <p className="text-nitro-gray-300">Error loading data: {error.message}</p>
+  if (loading) return <p className="text-nitro-gray-300">Loading...</p>;
+  if (error)
+    return (
+      <p className="text-nitro-gray-300">Error loading data: {error.message}</p>
+    );
 
   return (
     <div className="mx-auto py-12 min-h-[80vh] relative flex flex-col bg-nitro-black">
@@ -183,9 +202,13 @@ const Products = () => {
               </div>
               {/* Price Range Filter */}
               <div className="p-4">
-                <h3 className="text-lg font-semibold mb-2 text-white">Price Range</h3>
+                <h3 className="text-lg font-semibold mb-2 text-white">
+                  Price Range
+                </h3>
                 <select
-                  onChange={(e) => handlePriceFilterChange(JSON.parse(e.target.value))}
+                  onChange={(e) =>
+                    handlePriceFilterChange(JSON.parse(e.target.value))
+                  }
                   className="w-full p-2 border rounded bg-nitro-gray-800 text-white border-nitro-gray-700"
                 >
                   <option value="[0,10000000]">All</option>
@@ -198,9 +221,14 @@ const Products = () => {
               </div>
               {/* Category Filter */}
               <div className="p-4">
-                <h3 className="text-lg font-semibold mb-2 text-white">Categories</h3>
+                <h3 className="text-lg font-semibold mb-2 text-white">
+                  Categories
+                </h3>
                 {categories.map((category) => (
-                  <label key={category.id} className="block text-nitro-gray-300">
+                  <label
+                    key={category.id}
+                    className="block text-nitro-gray-300"
+                  >
                     <input
                       type="checkbox"
                       checked={selectedCategories.includes(category.name)}
@@ -240,29 +268,30 @@ const Products = () => {
                 animate={{ opacity: 1, y: 0 }}
                 whileHover={{ scale: 1.02 }}
               >
-                  <ProductCard
-                    id={product.id}
-                    name={product.name}
-                    description={
-                      product.description.split(" ").slice(0, 5).join(" ") +
-                      (product.description.split(" ").length > 5 ? "..." : "")
-                    }
-                    price={product.price}
-                    imgSrc={product.images[0]}
-                    isLiked={product.isLiked}
-                    onAddToCart={() => handleAddToCart(product.id)}
-                    onLikeClick={() => handleLikeClick(product.id)}
-                  />
+                <ProductCard
+                  id={product.id}
+                  name={product.name}
+                  description={
+                    product.description.split(" ").slice(0, 5).join(" ") +
+                    (product.description.split(" ").length > 5 ? "..." : "")
+                  }
+                  price={product.price}
+                  imgSrc={product.images[0]}
+                  isLiked={product.isLiked}
+                  onAddToCart={() => handleAddToCart(product.id)}
+                  onLikeClick={() => handleLikeClick(product.id)}
+                />
               </motion.div>
             ))
           ) : (
-            <p className="mx-4 text-nitro-gray-300">No products found matching your filters.</p>
+            <p className="mx-4 text-nitro-gray-300">
+              No products found matching your filters.
+            </p>
           )}
         </motion.div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Products
-
+export default Products;

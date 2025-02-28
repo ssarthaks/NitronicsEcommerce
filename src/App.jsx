@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import About from './pages/About';
 import Products from './pages/Products';
-import Contact from './pages/Contact';
 import ProductDetail from './pages/ProductDetail';
 import AdminLogin from './pages/Admin/AdminLogin';
 import Admin from './pages/Admin/Admin';
@@ -52,7 +51,6 @@ const App = () => {
                     <Route path="/about" element={<About />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/account" element={<Profile />} />
-                    <Route path="/contact" element={<Contact />} />
                     <Route path="/products/:id" element={<ProductDetail />} />
                     <Route path="/login" element={<LoginRedirect />} />
                     <Route path="/register" element={<Register />} />

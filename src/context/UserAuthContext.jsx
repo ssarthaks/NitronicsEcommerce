@@ -54,6 +54,7 @@ export const UserAuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     localStorage.removeItem('userToken');
+    localStorage.removeItem('adminToken');
     toast.warn('You have been logged out');
   };
 

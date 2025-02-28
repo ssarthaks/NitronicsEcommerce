@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";

@@ -1,38 +1,42 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
-import { useAuth } from "../../context/AuthContext"
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { motion } from "framer-motion";
 
 const AdminLogin = () => {
-  const { token, login } = useAuth()
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const navigate = useNavigate()
+  const { token, login } = useAuth();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
-      navigate("/admin")
+      navigate("/admin");
     }
-  }, [token, navigate])
+  }, [token, navigate]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const response = await axios.post("/api/admin/login", { username, password })
+      const response = await axios.post("/api/admin/login", {
+        username,
+        password,
+      });
       if (response.data.token) {
-        login(response.data.token)
-        navigate("/admin")
+        login(response.data.token);
+        navigate("/admin");
       } else {
-        setError("Login failed. Please try again.")
+        setError("Login failed. Please try again.");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Please check your credentials.")
+      setError(
+        err.response?.data?.message ||
+          "Login failed. Please check your credentials."
+      );
     }
-  }
+  };
 
   return (
     <motion.div
@@ -46,7 +50,9 @@ const AdminLogin = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
-        <h2 className="text-2xl font-bold text-center mb-4 text-white">Admin Login</h2>
+        <h2 className="text-2xl font-bold text-center mb-4 text-white">
+          Admin Login
+        </h2>
         {error && (
           <motion.p
             className="text-red-500 text-center mb-4"
@@ -87,8 +93,7 @@ const AdminLogin = () => {
         </form>
       </motion.div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default AdminLogin
-
+export default AdminLogin;

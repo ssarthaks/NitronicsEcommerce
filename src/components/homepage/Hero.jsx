@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { motion } from "framer-motion";
@@ -11,7 +9,7 @@ import Buttons from "./Buttons";
 import hero1 from "../../assets/a.png";
 import hero2 from "../../assets/b.png";
 import hero3 from "../../assets/c.png";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import CustomPagination from "../CustomPagination";
 
 const slides = [
@@ -58,9 +56,11 @@ const Hero = () => {
         className="relative"
       >
         {slides.map((slide) => (
-          <SwiperSlide key={slide.id} className={`${slide.background} flex items-center`}>
+          <SwiperSlide
+            key={slide.id}
+            className={`${slide.background} flex items-center`}
+          >
             <div className="container mx-auto flex flex-col md:flex-row items-center min-h-[90vh] md:justify-between justify-center px-6 relative z-10">
-              
               {/* Text Section */}
               <motion.div
                 className="text-center md:text-left basis-full md:basis-1/2 mb-8 md:mb-0"
@@ -132,7 +132,9 @@ const Hero = () => {
         <CustomPagination
           totalSlides={slides.length}
           currentSlide={currentSlide}
-          onPageChange={(index) => document.querySelector(".swiper").swiper.slideTo(index)}
+          onPageChange={(index) =>
+            document.querySelector(".swiper").swiper.slideTo(index)
+          }
         />
       </div>
     </div>

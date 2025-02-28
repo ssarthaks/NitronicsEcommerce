@@ -196,6 +196,21 @@ const Navbar = () => {
                 </ul>
               )}
             </li>
+
+            <li
+              className="hover:text-yellow-500 duration-300"
+              onClick={toggleSidebar}
+            >
+              <Link to="/about">About Us</Link>
+            </li>
+            <li
+              className="hover:text-yellow-500 duration-300 cursor-pointer"
+              onClick={() => {
+                toggleCartSidebar(), toggleSidebar();
+              }}
+            >
+              Cart
+            </li>
             {token ? (
               <>
                 <li className="hover:text-yellow-500 duration-300">
@@ -209,13 +224,10 @@ const Navbar = () => {
                 </li>
               </>
             ) : (
-              <li className="hover:text-yellow-500 duration-300">
+              <li className="hover:text-yellow-500 duration-300" onClick={toggleSidebar}>
                 <Link to="/login">Login</Link>
               </li>
             )}
-            <li className="hover:text-yellow-500 duration-300">
-              <Link to="/cart">Cart</Link>
-            </li>
           </ul>
         </div>
       </motion.div>
@@ -236,7 +248,6 @@ const Navbar = () => {
           />
         </div>
         <div className="p-6 space-y-4">
-          {console.log(cartItems)}
           {cartItems && cartItems.length > 0 ? (
             cartItems.map((item) => {
               const product = item.product;
@@ -297,7 +308,6 @@ const Navbar = () => {
           ) : (
             <p>Please login to view cart</p>
           )}
-
           {cartItems && cartItems.length > 0 && (
             <>
               <p>
@@ -325,6 +335,17 @@ const Navbar = () => {
           )}
         </div>
       </motion.div>
+
+      {/* Overlay */}
+      {(isOpen || isCartOpen) && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => {
+            setIsOpen(false);
+            setIsCartOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send } from "lucide-react";
@@ -58,7 +56,7 @@ const Newsletter = () => {
             </motion.div>
             <motion.button
               type="submit"
-              className="bg-nitro-accent text-nitro-black px-8 py-4 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-nitro-gray-200 transition-colors"
+              className="bg-nitro-accent text-nitro-black px-8 py-4 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-yellow-300 transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400 }}

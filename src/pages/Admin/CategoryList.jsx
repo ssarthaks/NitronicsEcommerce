@@ -1,7 +1,10 @@
-"use client"
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
-const CategoryList = ({ categories, onRemoveCategory, onSelectSubCategory }) => {
+const CategoryList = ({
+  categories,
+  onRemoveCategory,
+  onSelectSubCategory,
+}) => {
   return (
     <ul className="space-y-2">
       {categories.map((category) => (
@@ -34,8 +37,7 @@ const CategoryList = ({ categories, onRemoveCategory, onSelectSubCategory }) => 
         </motion.li>
       ))}
     </ul>
-  )
-}
+  );
+};
 
-export default CategoryList
-
+export default CategoryList;

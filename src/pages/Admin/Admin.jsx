@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CategoryForm from "./CategoryForm";
@@ -10,6 +8,9 @@ import ManageChildCategoryForm from "./ManageChildCategoryForm";
 import AdminOrders from "./AdminOrders";
 import { useCategory } from "../../context/CategoryContext";
 import Button from "../../components/Button";
+import { useUserAuth } from "../../context/UserAuthContext";
+import { useCart } from "../../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
   const {
@@ -26,6 +27,16 @@ const Admin = () => {
     handleRemoveChildCategory,
   } = useCategory();
   const [activeTab, setActiveTab] = useState("categories");
+
+  const { logout } = useUserAuth();
+  const { clearCart } = useCart();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    clearCart();
+    navigate("/login");
+  };
 
   useEffect(() => {
     const storedTab = localStorage.getItem("activeTab");
@@ -69,7 +80,7 @@ const Admin = () => {
               </motion.button>
             </motion.li>
           ))}
-          <Button text="Hello" />
+          <Button text="Logout" onClick={handleLogout} />
         </ul>
       </motion.div>
 

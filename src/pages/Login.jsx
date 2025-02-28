@@ -1,5 +1,3 @@
-"use client";
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -78,9 +76,7 @@ const Login = () => {
           Login
         </h2>
         {errorMessage && (
-          <motion.p
-            className="text-white text-lg mb-4 text-center bg-red-500 p-2 rounded-lg"
-          >
+          <motion.p className="text-white text-lg mb-4 text-center bg-red-500 p-2 rounded-lg">
             {errorMessage}
           </motion.p>
         )}

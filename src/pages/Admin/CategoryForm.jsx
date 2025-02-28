@@ -1,16 +1,14 @@
-"use client"
-
-import { useState } from "react"
-import { motion } from "framer-motion"
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 const CategoryForm = ({ onAddCategory }) => {
-  const [name, setName] = useState("")
+  const [name, setName] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onAddCategory({ name })
-    setName("")
-  }
+    e.preventDefault();
+    onAddCategory({ name });
+    setName("");
+  };
 
   return (
     <form onSubmit={handleSubmit} className="flex mb-4">
@@ -31,7 +29,7 @@ const CategoryForm = ({ onAddCategory }) => {
         Add Category
       </motion.button>
     </form>
-  )
-}
+  );
+};
 
-export default CategoryForm
+export default CategoryForm;
