@@ -46,6 +46,7 @@ const AdminOrders = () => {
   };
 
   const handleToggle = async (order) => {
+    
     if (expandedOrderId === order.id) {
       setExpandedOrderId(null);
       setExpandedOrderItems([]);
@@ -255,7 +256,7 @@ const AdminOrders = () => {
                     <td className="p-2 border border-nitro-gray-700 text-white">
                       {formatDate(order.createdAt)}
                     </td>
-                    <td className="p-2 border border-nitro-gray-700">
+                    <td className="p-2 border border-nitro-gray-700 flex flex-col gap-2">
                       <motion.select
                         value={order.status}
                         onChange={(e) =>
@@ -272,7 +273,7 @@ const AdminOrders = () => {
                       </motion.select>
                       <motion.button
                         onClick={() => handleToggle(order)}
-                        className="bg-nitro-accent text-nitro-black p-1 rounded hover:bg-yellow-300 transition mt-2"
+                        className="bg-nitro-accent text-nitro-black p-1 rounded hover:bg-yellow-300 transition"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >

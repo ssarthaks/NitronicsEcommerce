@@ -94,16 +94,16 @@ const Hero = () => {
                 >
                   {slide.text}
                 </motion.p>
-                <Link to="/products">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.7, delay: 0.7 }}
-                  >
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: 0.7 }}
+                >
+                  <Link to="/products">
                     <Buttons text="Shop Now" />
-                  </motion.div>
-                </Link>
+                  </Link>
+                </motion.div>
               </motion.div>
 
               {/* Image Section */}
