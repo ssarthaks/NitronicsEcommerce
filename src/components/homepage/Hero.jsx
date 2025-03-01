@@ -114,7 +114,7 @@ const Hero = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                <div className="relative w-full h-[60vh] md:h-[70vh]">
+                <div className="relative w-full h-[500px] md:h-[600px]">
                   <img
                     src={slide.image}
                     alt="Hero Image"
